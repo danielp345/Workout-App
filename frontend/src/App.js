@@ -7,6 +7,8 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import NewTraining from "./pages/NewTraining"
+import Trainings from "./pages/Trainings"
+import Training from "./pages/Training"
 
 function App() {
 	return (
@@ -20,6 +22,12 @@ function App() {
 						<Route path="/register" element={<Register />} />
 						<Route path="/new-training" element={<PrivateRoute />}>
 							<Route path="/new-training" element={<NewTraining />} />
+						</Route>
+						<Route path="/trainings" element={<PrivateRoute />}>
+							<Route path="/trainings" element={<Trainings />} />
+						</Route>
+						<Route path="/training/:trainingId" element={<PrivateRoute />}>
+							<Route path="/training/:trainingId" element={<Training />} />
 						</Route>
 					</Routes>
 				</div>

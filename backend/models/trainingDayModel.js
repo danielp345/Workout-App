@@ -1,11 +1,16 @@
 const mongoose = require("mongoose")
 
-const trainingShema = mongoose.Schema(
+const trainingDayShema = mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
 			ref: "User",
+		},
+		training: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: "Training",
 		},
 		trainingName: {
 			type: String,
@@ -15,13 +20,10 @@ const trainingShema = mongoose.Schema(
 			type: Array,
 			required: true,
 		},
-		trainingDays: {
-			type: Array
-		}
 	},
 	{
 		timestamps: true,
 	}
 )
 
-module.exports = mongoose.model("Training", trainingShema)
+module.exports = mongoose.model("TrainingDay", trainingDayShema)

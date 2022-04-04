@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const trainingShema = mongoose.Schema(
+const exerciseShema = mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -19,4 +19,4 @@ const trainingShema = mongoose.Schema(
 	}
 )
 
-module.exports = mongoose.model("Training", trainingShema)
+module.exports = mongoose.model("Excercise", trainingShema)
