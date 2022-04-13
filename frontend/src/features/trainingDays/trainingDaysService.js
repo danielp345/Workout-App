@@ -35,9 +35,26 @@ const getTrainingDays = async (trainingId, token) => {
 	return response.data
 }
 
+// Get one training day of training
+const getTrainingDay = async (trainingId, trainingDayId, token) => {
+    const config = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	}
+
+	const response = await axios.get(
+		API_URL + trainingId + "/training-days/" + trainingDayId,
+		config
+	)
+
+	return response.data
+}
+
 const trainingDaysService = {
 	createTrainingDay,
-    getTrainingDays
+    getTrainingDays,
+	getTrainingDay
 }
 
 export default trainingDaysService

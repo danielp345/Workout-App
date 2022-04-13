@@ -9,6 +9,7 @@ import Register from "./pages/Register"
 import NewTraining from "./pages/NewTraining"
 import Trainings from "./pages/Trainings"
 import Training from "./pages/Training"
+import TrainingDay from "./pages/TrainingDay"
 
 function App() {
 	return (
@@ -28,6 +29,15 @@ function App() {
 						</Route>
 						<Route path="/training/:trainingId" element={<PrivateRoute />}>
 							<Route path="/training/:trainingId" element={<Training />} />
+						</Route>
+						<Route
+							path="/training/:trainingId/:trainingDayId"
+							element={<PrivateRoute />}
+						>
+							<Route
+								path="/training/:trainingId/:trainingDayId"
+								element={<TrainingDay />}
+							/>
 						</Route>
 					</Routes>
 				</div>

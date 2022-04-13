@@ -1,11 +1,15 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate} from "react-router-dom"
 import {
 	getTrainingDays,
+	getTrainingDay,
 	reset as resetTD,
 } from "../features/trainingDays/trainingDaysSlice"
-import { getTraining, reset as resetT } from "../features/trainings/trainingsSlice"
+import {
+	getTraining,
+	reset as resetT,
+} from "../features/trainings/trainingsSlice"
 import TrainingDayItem from "../components/TrainingDayItem"
 import Spinner from "../components/Spinner"
 
@@ -17,6 +21,7 @@ function Training() {
 	const { training } = useSelector((state) => state.trainings)
 
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
 	const { trainingId } = useParams()
 
 	useEffect(() => {
@@ -33,12 +38,31 @@ function Training() {
 		dispatch(getTraining(trainingId))
 	}, [dispatch, trainingId])
 
+
+	const onClickCreateTD = () => {
+		console.log('soon')
+	}
+
+
 	if (isLoading) {
 		return <Spinner />
 	}
 	return (
 		<>
-			<h1>{training.trainingName}</h1>
+			<div className="text-center">
+				<h1 className="font-bold leading-tight text-5xl mt-0 mb-2">
+					{training.trainingName}
+				</h1>
+			</div>
+
+			<div className="side card compact bg-base-100 shadow-md">
+				<div className="card-body items-center space-x-4">
+					<button className="btn btn-primary" onClick={onClickCreateTD}>
+						<h2 className="card-title">Add new training day</h2>
+					</button>
+				</div>
+			</div>
+
 			{trainingDays.map((trainingDay) => (
 				<TrainingDayItem key={trainingDay._id} trainingDay={trainingDay} />
 			))}

@@ -8,7 +8,7 @@ const initialState = {
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
-	message: "",
+	message: '',
 }
 
 // Get training training days
@@ -31,14 +31,31 @@ export const getTrainingDays = createAsyncThunk(
 	}
 )
 
+// Get training training day
+export const getTrainingDay = createAsyncThunk(
+	"training-days/getOne",
+	async ({trainingId, trainingDayId}, thunkAPI) => {
+		try {
+			const token = thunkAPI.getState().auth.user.token
+			return await trainingDaysService.getTrainingDay(trainingId, trainingDayId, token)
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString
+
+			return thunkAPI.rejectWithValue(message)
+		}
+	}
+)
+
 export const trainingDaysSlice = createSlice({
 	name: "trainingDay",
 	initialState,
 	reducers: {
 		reset: (state) => initialState,
-        update: (state) => {
-            
-        }
 	},
 	extraReducers: (builder) => {
 		builder
@@ -51,6 +68,19 @@ export const trainingDaysSlice = createSlice({
 				state.trainingDays = action.payload
 			})
 			.addCase(getTrainingDays.rejected, (state, action) => {
+				state.isLoading = false
+				state.isError = true
+				state.message = action.payload
+			})
+			.addCase(getTrainingDay.pending, (state) => {
+				state.isLoading = true
+			})
+			.addCase(getTrainingDay.fulfilled, (state, action) => {
+				state.isLoading = false
+				state.isSuccess = true
+				state.trainingDay = action.payload
+			})
+			.addCase(getTrainingDay.rejected, (state, action) => {
 				state.isLoading = false
 				state.isError = true
 				state.message = action.payload

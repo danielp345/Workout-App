@@ -41,6 +41,43 @@ const createTrainingDay = asyncHandler(async (req, res) => {
 	res.status(201).json(training)
 })
 
+// @desc	Get training trainingDay
+// @route	GET /api/trainings/:idT/:idTD
+// @access  Private
+const getTrainingDay = asyncHandler(async (req, res) => {
+	// Get user and training using the id in the JWT
+	const user = await User.findById(req.user.id)
+
+	if (!user) {
+		res.status(400)
+		throw new Error("User not found")
+	}
+
+	const training = await Training.findById(req.params.id)
+
+	if (!training) {
+		res.status(401)
+		throw new Error("Training not found")
+	}
+
+	const trainingDay = await TrainingDay.findById(req.params.idTD)
+
+	if (!trainingDay) {
+		res.status(401)
+		throw new Error("Training Day not found")
+	}
+
+	if (
+		training.user.toString() !== req.user.id ||
+		trainingDay.user.toString() !== req.user.id ||
+		training.id !== trainingDay.training.toString()
+	) {
+		res.status(401)
+		throw new Error("Not authorized")
+	}
+		res.status(200).json(trainingDay)
+})
+
 // @desc	Get training trainingDays
 // @route	GET /api/trainings/:id
 // @access  Private
@@ -67,4 +104,5 @@ const getTrainingDays = asyncHandler(async (req, res) => {
 module.exports = {
 	createTrainingDay,
 	getTrainingDays,
+	getTrainingDay
 }
