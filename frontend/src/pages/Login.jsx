@@ -94,7 +94,7 @@ function Login() {
 				</div>
 			</div>
 
-			<button className="btn">Submit</button>
+			<button className="btn btn-block">Submit</button>
 		</form>
 	)
 }

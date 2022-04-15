@@ -4,12 +4,32 @@ import trainingDaysService from "./trainingDaysService"
 const initialState = {
 	trainingDays: [],
 	trainingDay: {},
-    trainingName: '',
+	trainingName: "",
 	isError: false,
 	isSuccess: false,
 	isLoading: false,
-	message: '',
+	message: "",
 }
+
+// Create training day
+export const createTrainingDay = createAsyncThunk(
+	"training-days/create",
+	async (trainingId, thunkAPI) => {
+		try {
+			const token = thunkAPI.getState().auth.user.token
+			return await trainingDaysService.createTrainingDay(trainingId, token)
+		} catch (error) {
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString
+
+			return thunkAPI.rejectWithValue(message)
+		}
+	}
+)
 
 // Get training training days
 export const getTrainingDays = createAsyncThunk(
@@ -34,10 +54,14 @@ export const getTrainingDays = createAsyncThunk(
 // Get training training day
 export const getTrainingDay = createAsyncThunk(
 	"training-days/getOne",
-	async ({trainingId, trainingDayId}, thunkAPI) => {
+	async ({ trainingId, trainingDayId }, thunkAPI) => {
 		try {
 			const token = thunkAPI.getState().auth.user.token
-			return await trainingDaysService.getTrainingDay(trainingId, trainingDayId, token)
+			return await trainingDaysService.getTrainingDay(
+				trainingId,
+				trainingDayId,
+				token
+			)
 		} catch (error) {
 			const message =
 				(error.response &&
@@ -59,6 +83,18 @@ export const trainingDaysSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+			.addCase(createTrainingDay.pending, (state) => {
+				state.isLoading = true
+			})
+			.addCase(createTrainingDay.fulfilled, (state) => {
+				state.isLoading = false
+				state.isSuccess = true
+			})
+			.addCase(createTrainingDay.rejected, (state, action) => {
+				state.isLoading = false
+				state.isError = true
+				state.message = action.payload
+			})
 			.addCase(getTrainingDays.pending, (state) => {
 				state.isLoading = true
 			})
@@ -85,19 +121,6 @@ export const trainingDaysSlice = createSlice({
 				state.isError = true
 				state.message = action.payload
 			})
-		// .addCase(createNote.pending, (state) => {
-		// 	state.isLoading = true
-		// })
-		// .addCase(createNote.fulfilled, (state, action) => {
-		// 	state.isLoading = false
-		// 	state.isSuccess = true
-		// 	state.notes.push(action.payload)
-		// })
-		// .addCase(createNote.rejected, (state, action) => {
-		// 	state.isLoading = false
-		// 	state.isError = true
-		// 	state.message = action.payload
-		// })
 	},
 })
 

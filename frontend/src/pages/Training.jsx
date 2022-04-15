@@ -2,8 +2,8 @@ import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useParams, useNavigate} from "react-router-dom"
 import {
+	createTrainingDay,
 	getTrainingDays,
-	getTrainingDay,
 	reset as resetTD,
 } from "../features/trainingDays/trainingDaysSlice"
 import {
@@ -23,7 +23,7 @@ function Training() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const { trainingId } = useParams()
-
+		
 	useEffect(() => {
 		return () => {
 			if (isSuccess) {
@@ -36,11 +36,14 @@ function Training() {
 	useEffect(() => {
 		dispatch(getTrainingDays(trainingId))
 		dispatch(getTraining(trainingId))
+		// console.log(trainingId)
 	}, [dispatch, trainingId])
 
 
 	const onClickCreateTD = () => {
-		console.log('soon')
+		dispatch(createTrainingDay(trainingId))
+		navigate('/')
+		// console.log(trainingId)
 	}
 
 

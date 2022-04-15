@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {useParams, useNavigate} from 'react-router-dom'
 import {
     getTrainingDay,
-    reset as reestTD
+    reset as resetTD
 } from '../features/trainingDays/trainingDaysSlice'
 import Spinner from '../components/Spinner'
 
@@ -18,6 +18,8 @@ function TrainingDay() {
 
     useEffect(() => {
         dispatch(getTrainingDay({trainingId, trainingDayId}))
+        console.log(trainingDay)
+        resetTD()
 
     }, [dispatch, trainingDayId])
 

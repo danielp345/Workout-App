@@ -8,16 +8,11 @@ const TrainingDay = require("../models/trainingDayModel")
 // @route    POST /api/trainings/:id
 // @access   Private
 const createTrainingDay = asyncHandler(async (req, res) => {
-	const { exercises } = req.body
-
-	if (!exercises) {
-		res.status(400)
-		throw new Error("Please put some exercises")
-	}
 
 	// Get user and training using the id in the JWT
 	const user = await User.findById(req.user.id)
 	const training = await Training.findById(req.params.id)
+	const trainingDays = await TrainingDay.find({ training: req.params.id })
 
 	if (!user) {
 		res.status(401)
@@ -28,17 +23,24 @@ const createTrainingDay = asyncHandler(async (req, res) => {
 		res.status(401)
 		throw new Error("Training not found")
 	}
+	
+	let exercises
+	let lastTD = trainingDays[trainingDays.length - 1]
+	
+	if(trainingDays.length > 0) {
+		exercises = [...lastTD.exercises]
+	} else {
+		exercises = [...training.exercises]
+	}
 
 	const trainingDay = await TrainingDay.create({
-		exercises,
+		exercises: exercises,
 		user: req.user.id,
 		training: req.params.id,
 		trainingName: training.trainingName,
 	})
 
-	training.trainingDays = [...training.trainingDays, trainingDay]
-
-	res.status(201).json(training)
+	res.status(201).json(trainingDay)
 })
 
 // @desc	Get training trainingDay
