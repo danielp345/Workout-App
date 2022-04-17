@@ -12,7 +12,7 @@ function TrainingDayItem({ trainingDay }) {
 		<div className="side card compact bg-base-100 shadow-md">
 			<div className="card-body items-center space-x-4">
 				<Link
-					to={`/training/${params.trainingId}/${trainingDay._id}`}
+					to={`training-days/${trainingDay._id}`}
 					className="stats shadow bg-base-200"
 				>
 					<div className="stat place-items-center">

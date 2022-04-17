@@ -11,14 +11,14 @@ function Navbar() {
 	const onLogout = () => {
 		dispatch(logout())
 		dispatch(reset())
-		navigate("/")
+		navigate("/home")
 	}
 
 	return (
 		<nav className="navbar mb-12 shadow-lg bg-neutral text-neutral-content">
 			<div className="container mx-auto">
 				<div className="flex-1 px-2 mx-2">
-					<Link to="/">
+					<Link to="/home">
 						<FaDumbbell className="inline mr-3 text-4xl" />
 					</Link>
 				</div>

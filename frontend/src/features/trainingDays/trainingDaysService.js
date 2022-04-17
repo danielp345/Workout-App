@@ -6,17 +6,19 @@ const API_URL = "/api/trainings/"
 const createTrainingDay = async (trainingId, token) => {
 	const config = {
 		headers: {
-			Authorization: `Bearer ${token}`,
-		},
+			Authorization: `Bearer ${token}`
+		}
 	}
 
 	const response = await axios.post(
-		API_URL + trainingId + "/training-days",
+		API_URL + trainingId + '/training-days',
+		{},
 		config
 	)
 
 	return response.data
 }
+
 
 // Get all training days of training
 const getTrainingDays = async (trainingId, token) => {

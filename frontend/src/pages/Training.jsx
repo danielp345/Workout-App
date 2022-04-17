@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useParams, useNavigate} from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import {
 	createTrainingDay,
 	getTrainingDays,
@@ -14,42 +14,44 @@ import TrainingDayItem from "../components/TrainingDayItem"
 import Spinner from "../components/Spinner"
 
 function Training() {
-	const { trainingDays, isLoading, isSuccess } = useSelector(
-		(state) => state.trainingDays
-	)
+	const { trainingDays, trainingDay, isLoading, isSuccess, isError } =
+		useSelector((state) => state.trainingDays)
 
 	const { training } = useSelector((state) => state.trainings)
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const { trainingId } = useParams()
-		
+
+	const trainingDaysInOrder = [...trainingDays].reverse()
+
 	useEffect(() => {
 		return () => {
 			if (isSuccess) {
 				dispatch(resetTD())
 				dispatch(resetT())
+				navigate(`training-days/${trainingDay._id}`)
 			}
 		}
-	}, [dispatch, isSuccess])
+	}, [dispatch, isSuccess, navigate, trainingDay])
 
 	useEffect(() => {
 		dispatch(getTrainingDays(trainingId))
 		dispatch(getTraining(trainingId))
-		// console.log(trainingId)
 	}, [dispatch, trainingId])
-
 
 	const onClickCreateTD = () => {
 		dispatch(createTrainingDay(trainingId))
-		navigate('/')
-		// console.log(trainingId)
 	}
-
 
 	if (isLoading) {
 		return <Spinner />
 	}
+
+	if (isError) {
+		return <h3>Something went wrong</h3>
+	}
+
 	return (
 		<>
 			<div className="text-center">
@@ -66,7 +68,7 @@ function Training() {
 				</div>
 			</div>
 
-			{trainingDays.map((trainingDay) => (
+			{trainingDaysInOrder.map((trainingDay) => (
 				<TrainingDayItem key={trainingDay._id} trainingDay={trainingDay} />
 			))}
 		</>

@@ -1,12 +1,16 @@
 const express = require("express")
 const router = express.Router()
-const { createTraining, getTrainings, getTraining } = require("../controllers/trainingController")
+const {
+	createTraining,
+	getTrainings,
+	getTraining,
+} = require("../controllers/trainingController")
 
 const { protect } = require("../middleware/authMiddleware")
 
 // Re-route into trainingDay router
-const trainingDayRouter = require('./trainingDayRoutes')
-router.use('/:id/training-days', trainingDayRouter)
+const trainingDayRouter = require("./trainingDayRoutes")
+router.use("/:trainingId/training-days", trainingDayRouter)
 
 router.route("/").get(protect, getTrainings).post(protect, createTraining)
 

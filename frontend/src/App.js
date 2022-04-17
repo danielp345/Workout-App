@@ -18,7 +18,7 @@ function App() {
 				<Navbar />
 				<div className="mx-6">
 					<Routes>
-						<Route path="/" element={<Home />} />
+						<Route path="/home" element={<Home />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
 						<Route path="/new-training" element={<PrivateRoute />}>
@@ -31,11 +31,11 @@ function App() {
 							<Route path="/training/:trainingId" element={<Training />} />
 						</Route>
 						<Route
-							path="/training/:trainingId/:trainingDayId"
+							path="/training/:trainingId/training-days/:trainingDayId"
 							element={<PrivateRoute />}
 						>
 							<Route
-								path="/training/:trainingId/:trainingDayId"
+								path="/training/:trainingId/training-days/:trainingDayId"
 								element={<TrainingDay />}
 							/>
 						</Route>

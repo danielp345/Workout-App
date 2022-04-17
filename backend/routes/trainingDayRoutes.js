@@ -14,4 +14,4 @@ router.route("/:idTD").get(protect, getTrainingDay)
 
 module.exports = router
 
-// /api/trainings/:id/training-day
+// /api/trainings/:trainingId/training-day

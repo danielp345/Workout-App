@@ -28,7 +28,7 @@ function Register() {
 
 		// Redirect when logged in
 		if (isSuccess) {
-			navigate("/")
+			navigate("/home")
 		}
 
 		dispatch(reset())

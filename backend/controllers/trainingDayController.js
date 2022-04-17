@@ -8,36 +8,38 @@ const TrainingDay = require("../models/trainingDayModel")
 // @route    POST /api/trainings/:id
 // @access   Private
 const createTrainingDay = asyncHandler(async (req, res) => {
-
-	// Get user and training using the id in the JWT
 	const user = await User.findById(req.user.id)
-	const training = await Training.findById(req.params.id)
-	const trainingDays = await TrainingDay.find({ training: req.params.id })
 
 	if (!user) {
 		res.status(401)
 		throw new Error("User not found")
 	}
 
-	if (!training) {
+	const training = await Training.findById(req.params.trainingId)
+
+	if (training.user.toString() !== req.user.id) {
 		res.status(401)
-		throw new Error("Training not found")
+		throw new Error("User not authorized")
 	}
-	
+
+	const trainingDays = await TrainingDay.find({ training: req.params.trainingId })
+
+	let lastTrainingDay = trainingDays[trainingDays.length - 1]
+
 	let exercises
-	let lastTD = trainingDays[trainingDays.length - 1]
-	
+
 	if(trainingDays.length > 0) {
-		exercises = [...lastTD.exercises]
+		exercises = [...lastTrainingDay.exercises]
 	} else {
 		exercises = [...training.exercises]
 	}
 
+
 	const trainingDay = await TrainingDay.create({
 		exercises: exercises,
-		user: req.user.id,
-		training: req.params.id,
+		training: req.params.trainingId,
 		trainingName: training.trainingName,
+		user: req.user.id
 	})
 
 	res.status(201).json(trainingDay)
@@ -55,7 +57,7 @@ const getTrainingDay = asyncHandler(async (req, res) => {
 		throw new Error("User not found")
 	}
 
-	const training = await Training.findById(req.params.id)
+	const training = await Training.findById(req.params.trainingId)
 
 	if (!training) {
 		res.status(401)
@@ -86,7 +88,7 @@ const getTrainingDay = asyncHandler(async (req, res) => {
 const getTrainingDays = asyncHandler(async (req, res) => {
 	// Get user and training using the id in the JWT
 	const user = await User.findById(req.user.id)
-	const training = await Training.findById(req.params.id)
+	const training = await Training.findById(req.params.trainingId)
 
 	if (!user) {
 		res.status(400)
@@ -98,7 +100,7 @@ const getTrainingDays = asyncHandler(async (req, res) => {
 		throw new Error("Training not found")
 	}
 
-	const trainingDays = await TrainingDay.find({ training: req.params.id })
+	const trainingDays = await TrainingDay.find({ training: req.params.trainingId })
 
 	res.status(200).json(trainingDays)
 })

@@ -32,7 +32,7 @@ export const createTraining = createAsyncThunk(
 
 // Get user trainings
 export const getTrainings = createAsyncThunk(
-	"tickets/getAll",
+	"trainings/getAll",
 	async (_, thunkAPI) => {
 		try {
 			const token = thunkAPI.getState().auth.user.token
@@ -52,7 +52,7 @@ export const getTrainings = createAsyncThunk(
 
 // Get single training
 export const getTraining = createAsyncThunk(
-	"tickets/get",
+	"training/get",
 	async (trainingId, thunkAPI) => {
 		try {
 			const token = thunkAPI.getState().auth.user.token

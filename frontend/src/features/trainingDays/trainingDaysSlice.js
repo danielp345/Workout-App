@@ -13,7 +13,7 @@ const initialState = {
 
 // Create training day
 export const createTrainingDay = createAsyncThunk(
-	"training-days/create",
+	'training-days/create',
 	async (trainingId, thunkAPI) => {
 		try {
 			const token = thunkAPI.getState().auth.user.token
@@ -26,7 +26,7 @@ export const createTrainingDay = createAsyncThunk(
 				error.message ||
 				error.toString
 
-			return thunkAPI.rejectWithValue(message)
+				return thunkAPI.rejectWithValue(message)
 		}
 	}
 )
@@ -86,9 +86,10 @@ export const trainingDaysSlice = createSlice({
 			.addCase(createTrainingDay.pending, (state) => {
 				state.isLoading = true
 			})
-			.addCase(createTrainingDay.fulfilled, (state) => {
+			.addCase(createTrainingDay.fulfilled, (state, action) => {
 				state.isLoading = false
 				state.isSuccess = true
+				state.trainingDay = action.payload
 			})
 			.addCase(createTrainingDay.rejected, (state, action) => {
 				state.isLoading = false
